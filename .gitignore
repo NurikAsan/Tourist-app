@@ -32,6 +32,6 @@ coverage/
 # Anything else project-specific you want to ignore
 *.log
 
-__pycache__/
+**/__pycache__/**
 **/migrations/**
 !**/migrations/__init__.py
