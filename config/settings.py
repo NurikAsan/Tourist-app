@@ -11,15 +11,20 @@ APPS = [
     'apps.tour'
 ]
 
-INSTALLED_APPS = [
+
+DJANGO_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.tour'
-    # *APPS
+]
+
+INSTALLED_APPS = [
+    *DJANGO_APPS,
+    *APPS
 ]
 
 MIDDLEWARE = [

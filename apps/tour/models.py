@@ -1,15 +1,5 @@
 from django.db import models
-
-
-class Base(models.Model):
-    verbose_name = None
-    title = models.CharField(max_length=40, verbose_name=verbose_name)
-
-    def __str__(self) -> str:
-        return self.title
-
-    class Meta:
-        abstract = True
+from apps.common.model.mixin import Base
 
 
 class PickupLocations(Base):
@@ -71,6 +61,12 @@ class Duration(Base):
 
 
 class Tour(models.Model):
+    DIFFICULT = [
+        (0, 'Easy'),
+        (1, 'Middle'),
+        (2, 'Hard')
+    ]
+
     title = models.CharField(max_length=50, verbose_name="Название Тура")
     point = models.CharField(max_length=50, verbose_name="Точка(Местоположение)")
     description = models.TextField(verbose_name="Описание", max_length=150)
@@ -88,6 +84,10 @@ class Tour(models.Model):
     included = models.ManyToManyField(Included, verbose_name="Что входит в стоимость")
     not_included = models.ManyToManyField(NotIncluded, verbose_name="Что не входит в стоимость")
     duration = models.ForeignKey(Duration, on_delete=models.DO_NOTHING, verbose_name="Длительность тура")
+    difficulty = models.PositiveSmallIntegerField(
+        choices=DIFFICULT, default=DIFFICULT[0][0],
+        max_length=2, verbose_name="Сложность"
+    )
 
     def __str__(self):
         return self.title
