@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from apps.common.model.mixin import Base
 
@@ -86,7 +87,6 @@ class Tour(models.Model):
     end_date = models.DateField(null=True, verbose_name='Дата окончания')
     views = models.PositiveBigIntegerField(default=0, verbose_name='Просмотры')
     archived = models.BooleanField(default=False, verbose_name='Архивирован')
-    is_favorite = models.BooleanField(default=False, verbose_name='В избранное')
 
     pickup_locations = models.ManyToManyField(PickupLocations, verbose_name='Точки сбора')
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, verbose_name="Категория")
@@ -112,7 +112,9 @@ class Tour(models.Model):
 
 
 class TourImage(models.Model):
-    tour = models.ForeignKey(Tour, on_delete=models.CASCADE, verbose_name="тур")
+    tour = models.ForeignKey(
+        Tour, on_delete=models.CASCADE, verbose_name="тур", related_name='images'
+    )
     image = models.ImageField(upload_to='tour_images/', verbose_name="Изображение")
 
     class Meta:
@@ -120,3 +122,20 @@ class TourImage(models.Model):
         verbose_name_plural = "Изображения туров"
 
 
+class FavoriteTour(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
+    tour = models.ForeignKey(
+        Tour, on_delete=models.CASCADE, verbose_name="Тур"
+    )
+
+    def __str__(self):
+        return f"{self.user} - {self.tour.title}"
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'tour'], name='unique_user_tour'
+            )
+        ]
+        verbose_name = "Избранный тур"
+        verbose_name_plural = "Избранные туры"

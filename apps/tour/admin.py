@@ -2,14 +2,25 @@ from django.contrib import admin
 from .models import (
     Tour, PickupLocations, Category,
     Program, Equipment, Included,
-    NotIncluded, Duration
+    NotIncluded, Duration, TourDates,
+    TourImage
 )
 from apps.common.admin.mixin import BaseAdmin
 
 
+class TourImageInline(admin.TabularInline):
+    model = TourImage
+    extra = 1
+
+
 @admin.register(Tour)
 class TourAdmin(admin.ModelAdmin):
-    ...
+    inlines = [TourImageInline]
+    list_display = ('title', 'category', 'start_date', 'end_date', 'archived')
+    list_filter = ('category', 'difficulty', 'archived')
+    # fields = ('category', 'title', 'point', 'duration', 'price', 'description', 'difficulty', 'views', 'tags',
+    #           'pickup_locations', 'program', 'equipment', 'included', 'not_included', 'start_date',
+    #           'end_date', 'tour_dates', 'archived','is_favorite')
 
 
 @admin.register(Category)
@@ -44,5 +55,12 @@ class NotIncludedAdmin(BaseAdmin):
 
 
 @admin.register(Duration)
-class NotIncludedAdmin(admin.ModelAdmin):
+class NotIncludedAdmin(BaseAdmin):
     pass
+
+
+@admin.register(TourDates)
+class TourDatesAdmin(BaseAdmin):
+    list_display = ('id', 'date',)
+    search_fields = 'date',
+

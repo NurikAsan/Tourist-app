@@ -53,7 +53,7 @@ class LocationsSerializer(serializers.ModelSerializer):
 class TourImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = TourImage
-        fields = 'image',
+        fields = 'image', 'id'
 
 
 class TourDateSerializer(serializers.ModelSerializer):
@@ -89,6 +89,7 @@ class TourCardSerializer(serializers.ModelSerializer):
     images = TourImageSerializer(many=True, read_only=True)
     duration = DurationSerializer(read_only=True)
     tour_dates = TourDateSerializer(many=True, read_only=True)
+    is_favorite = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Tour
