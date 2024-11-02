@@ -3,7 +3,7 @@ from rest_framework import serializers
 from apps.tour.models import (
     Tour, Program, Duration,
     Included, NotIncluded, Equipment,
-    PickupLocations, TourImage, TourDates, Category
+    PickupLocations, TourImage, TourDates, Category, FavoriteTour
 )
 
 
@@ -99,3 +99,16 @@ class TourCardSerializer(serializers.ModelSerializer):
             'duration', 'tour_dates',
             'is_favorite'
         )
+
+
+class FavoriteTourSerializer(serializers.ModelSerializer):
+    tour = TourCardSerializer(read_only=True)
+
+    class Meta:
+        model = FavoriteTour
+        fields = 'tour',
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['tour']['is_favorite'] = True
+        return representation
