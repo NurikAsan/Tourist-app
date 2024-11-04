@@ -4,13 +4,16 @@ from django.contrib.auth.models import AnonymousUser
 from django.db.models import Exists, OuterRef, Value
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .filters import TourFilter, FavoriteTourFilter
 from .models import Tour, Category, FavoriteTour
-from .serializers import TourCardSerializer, CategorySerializer, FavoriteTourSerializer
+from .serializers import (
+    TourCardSerializer, CategorySerializer, FavoriteTourSerializer,
+    HistoryTourSerializer, PushSerializer
+)
 
 
 @extend_schema(tags=['Category'])
@@ -81,3 +84,15 @@ class FavoriteTourViewSet(viewsets.GenericViewSet,
             .prefetch_related('tour__tour_dates')
             .select_related('tour__duration')
         )
+
+
+@extend_schema(tags=['Upcoming Tours'])
+class UpcomingToursApiView(viewsets.GenericViewSet,
+                            mixins.ListModelMixin,
+                            mixins.RetrieveModelMixin,
+                            mixins.DestroyModelMixin):
+    serializer_class = HistoryTourSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        pass

@@ -112,3 +112,18 @@ class FavoriteTourSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['tour']['is_favorite'] = True
         return representation
+
+
+class HistoryTourSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tour
+        fields = (
+            'images', 'title',
+            'start_date', 'price',
+            'duration'
+        )
+
+
+class PushSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    body = serializers.CharField()

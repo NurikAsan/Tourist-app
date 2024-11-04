@@ -1,5 +1,8 @@
-from pathlib import Path
 import os
+from pathlib import Path
+
+import firebase_admin
+from firebase_admin import credentials
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1vqc9q-^2v&_@&%s0$ywd^ljtwxxis$in&7cxf)*$+(i$vrun!'
@@ -9,7 +12,8 @@ ALLOWED_HOSTS = []
 
 
 APPS = [
-    'apps.tour'
+    'apps.tour',
+    'apps.user'
 ]
 
 
@@ -27,7 +31,8 @@ PACKAGE = [
     'rest_framework',
     'drf_spectacular',
     'django_filters',
-    'debug_toolbar'
+    'debug_toolbar',
+    'fcm_django'
 ]
 
 INSTALLED_APPS = [
@@ -122,3 +127,6 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
+
+AUTH_USER_MODEL = 'user.User'
