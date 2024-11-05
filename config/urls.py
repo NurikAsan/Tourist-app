@@ -9,14 +9,15 @@ from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include('apps.tour.urls'))
+    path('api/v1/', include('apps.tour.urls')),
+    path('api/v1/auth/', include('apps.user.urls')),
+    path('api/v1/token/register/', FCMDeviceAuthorizedViewSet.as_view({"post": "create"})),
+    # path('api/v1/send_message', PushApi.as_view())
 ]
 
 swagger_url = [
     path('swagger/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('api/v1/token/register/', FCMDeviceAuthorizedViewSet.as_view({"post": "create"})),
-    # path('api/v1/send_message', PushApi.as_view())
 ]
 
 urlpatterns += swagger_url

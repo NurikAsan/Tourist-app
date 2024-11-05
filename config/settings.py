@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from decouple import config
 
 import firebase_admin
 from firebase_admin import credentials
@@ -130,3 +131,8 @@ REST_FRAMEWORK = {
 
 
 AUTH_USER_MODEL = 'user.User'
+
+NIKITA_LOGIN = config('NIKITA_LOGIN')
+NIKITA_PASSWORD = config('NIKITA_PASSWORD')
+NIKITA_SENDER = config('NIKITA_SENDER')
+NIKITA_URL = config('NIKITA_URL')

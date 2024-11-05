@@ -17,6 +17,7 @@ class User(AbstractUser):
     email = models.EmailField(null=True, blank=True)
     birth_date = models.DateField(null=True, blank=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    code = models.CharField(max_length=4, null=True, blank=True)
 
     objects = UserManager()
 
